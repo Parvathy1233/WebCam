@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Webcam Capture</title>
+</head>
+<body>
+	<video id="video" width="640" height="480" autoplay></video>
+	<button id="snap">Capture</button>
+	<canvas id="canvas" width="640" height="480"></canvas>
+
+	<script>
+		
+		const video = document.getElementById('video');
+		const canvas = document.getElementById('canvas');
+		const snapButton = document.getElementById('snap');
+
+		
+		navigator.mediaDevices.getUserMedia({ video: true })
+			.then(function(stream) {
+				
+				video.srcObject = stream;
+				video.play();
+			})
+			.catch(function(err) {
+				console.error("Failed to get webcam stream", err);
+			});
+            
+		snapButton.addEventListener("click", function() {
+			
+			canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+			
+			const dataURL = canvas.toDataURL();
+			const img = document.createElement('img');
+			img.src = dataURL;
+		});
+	</script>
+</body> 
+</html> 
